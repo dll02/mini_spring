@@ -1,8 +1,8 @@
 package com.minis.beans.factory;
 
 import com.minis.beans.BeansException;
-import com.minis.beans.support.AutowiredAnnotationBeanPostProcessor;
-import com.minis.beans.support.BeanPostProcessor;
+import com.minis.beans.config.AutowiredAnnotationBeanPostProcessor;
+import com.minis.beans.config.BeanPostProcessor;
 
 import java.util.ArrayList;
 import java.util.List;

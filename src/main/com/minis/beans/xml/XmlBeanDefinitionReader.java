@@ -1,6 +1,9 @@
 package com.minis.beans.xml;
 
 import com.minis.beans.core.*;
+import com.minis.beans.factory.AbstractBeanFactory;
+import com.minis.beans.factory.AutowireCapableBeanFactory;
+import com.minis.beans.factory.BeanFactory;
 import com.minis.beans.factory.SimpleBeanFactory;
 import com.minis.beans.support.Resource;
 import org.dom4j.Element;
@@ -9,10 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class XmlBeanDefinitionReader {
-    SimpleBeanFactory simpleBeanFactory;
+    AutowireCapableBeanFactory beanFactory;
 
-    public XmlBeanDefinitionReader(SimpleBeanFactory simpleBeanFactory) {
-        this.simpleBeanFactory = simpleBeanFactory;
+    public XmlBeanDefinitionReader(AutowireCapableBeanFactory beanFactory) {
+        this.beanFactory = beanFactory;
     }
 
     public void loadBeanDefinitions(Resource resource) {
@@ -54,7 +57,7 @@ public class XmlBeanDefinitionReader {
                 AVS.addArgumentValue(new ConstructorArgumentValue(aName, aValue, aType));
             }
             beanDefinition.setConstructorArgumentValues(AVS);
-            this.simpleBeanFactory.registerBeanDefinition(beanDefinition.getId(),beanDefinition);
+            this.beanFactory.registerBeanDefinition(beanDefinition.getId(),beanDefinition);
         }
     }
 }

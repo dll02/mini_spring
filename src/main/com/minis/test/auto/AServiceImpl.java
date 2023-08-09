@@ -1,4 +1,5 @@
-package com.minis.test;
+package com.minis.test.auto;
+
 
 public class AServiceImpl implements AService {
     private String property1;

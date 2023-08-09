@@ -1,4 +1,4 @@
-package com.minis.beans.support;
+package com.minis.beans.config;
 
 import com.minis.beans.BeansException;
 

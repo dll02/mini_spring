@@ -1,4 +1,5 @@
-package com.minis.test;
+package com.minis.test.auto;
+
 
 public class BaseBaseService {
     private AServiceImpl as;
@@ -9,5 +10,9 @@ public class BaseBaseService {
 
     public void setAs(AServiceImpl as) {
         this.as = as;
+    }
+
+    public void sayHello() {
+        as.sayHello();
     }
 }

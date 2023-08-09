@@ -1,7 +1,8 @@
-package com.minis.beans.support;
+package com.minis.beans.config;
 
 import com.minis.beans.BeansException;
 import com.minis.beans.factory.AutowireCapableBeanFactory;
+import com.minis.beans.annotation.Autowired;
 
 import java.lang.reflect.Field;
 
@@ -15,12 +16,12 @@ public class AutowiredAnnotationBeanPostProcessor implements BeanPostProcessor {
 
         Class<?> clazz = bean.getClass();
         Field[] fields = clazz.getDeclaredFields();
-        if(fields!=null){
+        if (fields != null) {
             //对每一个属性进行判断，如果带有@Autowired注解则进行处理
-            for(Field field : fields){
+            for (Field field : fields) {
                 boolean isAutowired =
                         field.isAnnotationPresent(Autowired.class);
-                if(isAutowired){
+                if (isAutowired) {
                     //根据属性名查找同名的bean
                     String fieldName = field.getName();
                     Object autowiredObj =
@@ -38,14 +39,17 @@ public class AutowiredAnnotationBeanPostProcessor implements BeanPostProcessor {
         }
         return result;
     }
+
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName)
             throws BeansException {
         return null;
     }
+
     public AutowireCapableBeanFactory getBeanFactory() {
         return beanFactory;
     }
+
     public void setBeanFactory(AutowireCapableBeanFactory beanFactory) {
         this.beanFactory = beanFactory;
     }

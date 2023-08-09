@@ -46,7 +46,7 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry
                 // 进行beanpostprocessor处理
                 // step 1: postProcessBeforeInitialization
                 applyBeanPostProcessorsBeforeInitialization(singleton, beanName);
-                // step 2: init-method
+                // step 2: run init-method with bean
                 if (beanDefinition.getInitMethodName() != null &&
                         !beanDefinition.equals("")) {
                     invokeInitMethod(beanDefinition, singleton);
@@ -55,7 +55,6 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry
                 applyBeanPostProcessorsAfterInitialization(singleton, beanName);
             }
         }
-
         return singleton;
     }
     private void invokeInitMethod(BeanDefinition beanDefinition, Object obj) {
@@ -86,13 +85,13 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry
             beanDefinition) {
         this.beanDefinitionMap.put(name, beanDefinition);
         this.beanDefinitionNames.add(name);
-        if (!beanDefinition.isLazyInit()) {
-            try {
-                getBean(name);
-            } catch (BeansException e) {
-                throw new RuntimeException(e);
-            }
-        }
+//        if (!beanDefinition.isLazyInit()) {
+//            try {
+//                getBean(name);
+//            } catch (BeansException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
     }
     @Override
     public void removeBeanDefinition(String name) {
@@ -174,20 +173,15 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry
                         paramValues[i] = constructorArgumentValue.getValue();
                     }
                 }
-                try {
+
                     con = clz.getConstructor(paramTypes);
                     obj = con.newInstance(paramValues);
-                } catch (InvocationTargetException e) {
-                    throw new RuntimeException(e);
-                } catch (InstantiationException e) {
-                    throw new RuntimeException(e);
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
+
+            }else {
+                obj = clz.newInstance();
             }
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (NoSuchMethodException e) {
+        } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException |
+                 InvocationTargetException e   ) {
             throw new RuntimeException(e);
         }
         System.out.println(beanDefinition.getId() + " bean created. " +

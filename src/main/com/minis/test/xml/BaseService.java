@@ -1,4 +1,4 @@
-package com.minis.test;
+package com.minis.test.xml;
 
 public class BaseService {
     private BaseBaseService bbs;
