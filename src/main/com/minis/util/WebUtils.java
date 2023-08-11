@@ -1,10 +1,11 @@
 package com.minis.util;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.util.Enumeration;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.servlet.http.HttpServletRequest;
 
 public class WebUtils {
     public static Map<String, Object> getParametersStartingWith(HttpServletRequest request, String prefix) {
