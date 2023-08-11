@@ -1,7 +1,7 @@
 package com.minis.test.auto;
 
 
-import com.minis.beans.annotation.Autowired;
+import com.minis.beans.factory.annotation.Autowired;
 
 public class BaseService {
     @Autowired

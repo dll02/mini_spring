@@ -39,7 +39,7 @@
  -->
 	<bean id="asyncAnnotationBeanPostProcessor" class="com.minis.scheduling.annotation.AsyncAnnotationBeanPostProcessor" /> 
 	<bean id="logBeanPostProcessor" class="com.test.LogBeanPostProcessor" /> 
-	<bean id="autowiredAnnotationBeanPostProcessor" class="com.minis.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" /> 
+	<bean id="autowiredAnnotationBeanPostProcessor" class="com.minis.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
 	
 	
 <!-- 	<bean id="realaction" class="com.test.service.Action1" /> 	

@@ -1,8 +1,11 @@
 package com.minis.beans.factory;
 
-import com.minis.beans.config.DefaultSingletonBeanRegistry;
-import com.minis.beans.core.*;
+import com.minis.beans.PropertyValue;
+import com.minis.beans.PropertyValues;
+import com.minis.beans.factory.config.*;
 import com.minis.beans.BeansException;
+import com.minis.beans.factory.support.BeanDefinitionRegistry;
+import com.minis.beans.factory.support.DefaultSingletonBeanRegistry;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
