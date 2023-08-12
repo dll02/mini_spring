@@ -1,6 +1,9 @@
 package com.minis.web;
 
 
+import com.minis.web.context.WebApplicationContext;
+import com.minis.web.context.support.AnnotationConfigWebApplicationContext;
+import com.minis.web.servlet.*;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -14,12 +17,21 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
+import java.util.*;
 
 public class DispatcherServlet extends HttpServlet {
+
+    private static final long serialVersionUID = 1L;
+    public static final String WEB_APPLICATION_CONTEXT_ATTRIBUTE = DispatcherServlet.class.getName() + ".CONTEXT";
+    public static final String HANDLER_MAPPING_BEAN_NAME = "handlerMapping";
+    public static final String HANDLER_ADAPTER_BEAN_NAME = "handlerAdapter";
+    public static final String MULTIPART_RESOLVER_BEAN_NAME = "multipartResolver";
+    public static final String LOCALE_RESOLVER_BEAN_NAME = "localeResolver";
+    public static final String HANDLER_EXCEPTION_RESOLVER_BEAN_NAME = "handlerExceptionResolver";
+    public static final String REQUEST_TO_VIEW_NAME_TRANSLATOR_BEAN_NAME = "viewNameTranslator";
+    public static final String VIEW_RESOLVER_BEAN_NAME = "viewResolver";
+    private static final String DEFAULT_STRATEGIES_PATH = "DispatcherServlet.properties";
+    private static final Properties defaultStrategies = null;
     private Map<String, MappingValue> mappingValues;
     private Map<String, Class<?>> mappingClz = new HashMap<>();
     private List<String> packageNames = new ArrayList<>();
@@ -32,119 +44,50 @@ public class DispatcherServlet extends HttpServlet {
     private WebApplicationContext webApplicationContext;
     private WebApplicationContext parentApplicationContext;
     private String sContextConfigLocation;
-
+    private HandlerMapping handlerMapping;
+    private HandlerAdapter handlerAdapter;
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        this.getServletContext().getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE);
-        sContextConfigLocation = config.getInitParameter("contextConfigLocation");
-        URL xmlPath = null;
-        try {
-            xmlPath = this.getServletContext().getResource(sContextConfigLocation);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        this.packageNames = XmlScanComponentHelper.getNodeValue(xmlPath);
-        refresh();
+        this.parentApplicationContext = (WebApplicationContext) this.getServletContext().getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE);
+        this.sContextConfigLocation = config.getInitParameter("contextConfigLocation");
+        this.webApplicationContext = new AnnotationConfigWebApplicationContext(this.sContextConfigLocation,this.parentApplicationContext);
+        Refresh();
     }
 
     //对所有的mappingValues中注册的类进行实例化，默认构造函数
-    protected void refresh() {
-        initController(); // 初始化 controller
-        initMapping();
+    protected void Refresh() {
+        initHandlerMappings(this.webApplicationContext);
+        initHandlerAdapters(this.webApplicationContext);
+    }
+    protected void initHandlerMappings(WebApplicationContext wac) {
+        this.handlerMapping = new RequestMappingHandlerMapping(wac);
+    }
+    protected void initHandlerAdapters(WebApplicationContext wac) {
+        this.handlerAdapter = new RequestMappingHandlerAdapter(wac);
     }
 
-    protected void initMapping() {
-        for (String controllerName : this.controllerNames) {
-            Class<?> clazz = this.controllerClasses.get(controllerName);
-            Object obj = this.controllerObjs.get(controllerName);
-            // 获得控制类的 方法
-            Method[] methods = clazz.getDeclaredMethods();
-            for (Method method : methods) {
-                //检查所有的方法 是否是 @RequestMapping 注解的请求method
-                boolean isRequestMapping =
-                        method.isAnnotationPresent(RequestMapping.class);
-                if (isRequestMapping) { //有RequestMapping注解
-                    String methodName = method.getName();
-                    //建立方法名和URL的映射 注解携带的path value
-                    String urlMapping =
-                            method.getAnnotation(RequestMapping.class).value();
-                    this.urlMappingNames.add(urlMapping);
-                    this.mappingObjs.put(urlMapping, obj);
-                    this.mappingMethods.put(urlMapping, method);
-                }
-            }
-        }
-    }
-
-    protected void initController() {
-        //扫描包，获取所有类名
-        this.controllerNames = scanPackages(this.packageNames);
-        for (String controllerName : this.controllerNames) {
-            Object obj = null;
-            Class<?> clz = null;
-            try {
-                clz = Class.forName(controllerName); //加载类
-                this.controllerClasses.put(controllerName, clz);
-                obj = clz.newInstance(); //实例化bean
-                this.controllerObjs.put(controllerName, obj);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private List<String> scanPackages(List<String> packages) {
-        List<String> tempControllerNames = new ArrayList<>();
-        for (String packageName : packages) {
-            // 对每一个包进行扫描
-            tempControllerNames.addAll(scanPackage(packageName));
-        }
-        return tempControllerNames;
-    }
-
-
-    private List<String> scanPackage(String packageName) {
-        List<String> tempControllerNames = new ArrayList<>();
-        URI uri = null;
-        //将以.分隔的包名换成以/分隔的uri
+    protected void service(HttpServletRequest request, HttpServletResponse
+            response) {
+        request.setAttribute(WEB_APPLICATION_CONTEXT_ATTRIBUTE,
+                this.webApplicationContext);
         try {
-            // . 替换为 / 构造路径
-            uri = this.getClass().getResource("/" +
-                    packageName.replaceAll("\\.", "/")).toURI();
+            doDispatch(request, response);
         } catch (Exception e) {
+            e.printStackTrace();
         }
-        File dir = new File(uri);
-        //处理对应的文件目录
-        for (File file : dir.listFiles()) { //目录下的文件或者子目录
-            if (file.isDirectory()) { //对子目录递归扫描
-                scanPackage(packageName + "." + file.getName());
-            } else { //类文件
-                // 存储类文件的 name
-                String controllerName = packageName + "."
-                        + file.getName().replace(".class", "");
-                tempControllerNames.add(controllerName);
-            }
+        finally {
         }
-        return tempControllerNames;
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String sPath = request.getServletPath(); //获取请求的path
-        if (!this.urlMappingNames.contains(sPath)) {
+    protected void doDispatch(HttpServletRequest request, HttpServletResponse
+            response) throws Exception{
+        HttpServletRequest processedRequest = request;
+        HandlerMethod handlerMethod = null;
+        handlerMethod = this.handlerMapping.getHandler(processedRequest);
+        if (handlerMethod == null) {
             return;
         }
-        Object controllerObj;
-        Object objectResult;
-
-        //将方法返回值写入response
-        try {
-            Method method = this.mappingMethods.get(sPath);
-            controllerObj = this.mappingObjs.get(sPath);
-            objectResult = method.invoke(controllerObj);
-
-        } catch (InvocationTargetException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-        response.getWriter().append(objectResult.toString());
+        HandlerAdapter ha = this.handlerAdapter;
+        ha.handle(processedRequest, response, handlerMethod);
     }
 }

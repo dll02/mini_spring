@@ -9,8 +9,10 @@
         <property type="String" name="property1" value="Someone says"/>
         <property type="String" name="property2" value="Hello World!"/>
         <property type="com.minis.test.auto.BaseService" name="ref1"
-                  ref="baseservice"/>
+                  ref="baseService"/>
     </bean>
-    <bean id="baseservice" class="com.minis.test.auto.BaseService">
+    <bean id="baseService" class="com.minis.test.auto.BaseService">
     </bean>
+    <bean id="autowiredAnnotationBeanPostProcessor" class="com.minis.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
+
 </beans>

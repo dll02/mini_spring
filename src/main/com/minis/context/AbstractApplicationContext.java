@@ -20,8 +20,6 @@ public abstract class AbstractApplicationContext implements ApplicationContext{
     private final AtomicBoolean closed = new AtomicBoolean();
     private ApplicationEventPublisher applicationEventPublisher;
 
-
-
     @Override
     public Object getBean(String beanName) throws BeansException {
         Object returnObj = getBeanFactory().getBean(beanName);

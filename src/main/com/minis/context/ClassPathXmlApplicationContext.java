@@ -125,7 +125,6 @@ public class ClassPathXmlApplicationContext extends AbstractApplicationContext {
         return this.beanFactory;
     }
 
-
     @Override
     public void finishRefresh() {
         publishEvent(new ContextRefreshedEvent(this));

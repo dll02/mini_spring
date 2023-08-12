@@ -176,7 +176,7 @@ public abstract class AbstractBeanFactory
             clz = Class.forName(bd.getClassName());
             // handle constructor
             ConstructorArgumentValues argumentValues = bd.getConstructorArgumentValues();
-            if (!argumentValues.isEmpty()) {
+            if (argumentValues!=null && !argumentValues.isEmpty()) {
                 Class<?>[] paramTypes = new Class<?>
                         [argumentValues.getArgumentCount()];
                 Object[] paramValues = new
