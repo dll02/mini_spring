@@ -34,7 +34,7 @@ public class AServiceImpl implements AService {
         this.property2 = property2;
     }
 
-    public void sayHello() {
-        System.out.println("a service 1 say hello:" + getProperty1() + ":" + getProperty2());
+    public String sayHello() {
+        return "a service 1 say hello:" + getProperty1() + ":" + getProperty2();
     }
 }

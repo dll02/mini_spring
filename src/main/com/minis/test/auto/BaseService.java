@@ -18,8 +18,8 @@ public class BaseService {
     public BaseService() {
     }
 
-    public void sayHello() {
+    public String sayHello() {
         System.out.println("Base Service says Hello");
-        bbs.sayHello();
+        return bbs.sayHello();
     }
 }

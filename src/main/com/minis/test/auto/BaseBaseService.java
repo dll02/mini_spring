@@ -12,7 +12,7 @@ public class BaseBaseService {
         this.as = as;
     }
 
-    public void sayHello() {
-        as.sayHello();
+    public String sayHello() {
+        return as.sayHello();
     }
 }

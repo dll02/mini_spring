@@ -29,11 +29,14 @@ public class DispatcherServlet extends HttpServlet {
     private List<String> urlMappingNames = new ArrayList<>();
     private Map<String, Object> mappingObjs = new HashMap<>();
     private Map<String, Method> mappingMethods = new HashMap<>();
+    private WebApplicationContext webApplicationContext;
+    private WebApplicationContext parentApplicationContext;
+    private String sContextConfigLocation;
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-
-        String sContextConfigLocation = config.getInitParameter("contextConfigLocation");
+        this.getServletContext().getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE);
+        sContextConfigLocation = config.getInitParameter("contextConfigLocation");
         URL xmlPath = null;
         try {
             xmlPath = this.getServletContext().getResource(sContextConfigLocation);
@@ -41,9 +44,6 @@ public class DispatcherServlet extends HttpServlet {
             e.printStackTrace();
         }
         this.packageNames = XmlScanComponentHelper.getNodeValue(xmlPath);
-//        Resource rs = new ClassPathXmlResource(xmlPath);
-//        XmlConfigReader reader = new XmlConfigReader();
-//        mappingValues = reader.loadConfig(rs);
         refresh();
     }
 
@@ -59,20 +59,18 @@ public class DispatcherServlet extends HttpServlet {
             Object obj = this.controllerObjs.get(controllerName);
             // 获得控制类的 方法
             Method[] methods = clazz.getDeclaredMethods();
-            if (methods != null) {
-                for (Method method : methods) {
-                    //检查所有的方法 是否是 @RequestMapping 注解的请求method
-                    boolean isRequestMapping =
-                            method.isAnnotationPresent(RequestMapping.class);
-                    if (isRequestMapping) { //有RequestMapping注解
-                        String methodName = method.getName();
-                        //建立方法名和URL的映射 注解携带的path value
-                        String urlMapping =
-                                method.getAnnotation(RequestMapping.class).value();
-                        this.urlMappingNames.add(urlMapping);
-                        this.mappingObjs.put(urlMapping, obj);
-                        this.mappingMethods.put(urlMapping, method);
-                    }
+            for (Method method : methods) {
+                //检查所有的方法 是否是 @RequestMapping 注解的请求method
+                boolean isRequestMapping =
+                        method.isAnnotationPresent(RequestMapping.class);
+                if (isRequestMapping) { //有RequestMapping注解
+                    String methodName = method.getName();
+                    //建立方法名和URL的映射 注解携带的path value
+                    String urlMapping =
+                            method.getAnnotation(RequestMapping.class).value();
+                    this.urlMappingNames.add(urlMapping);
+                    this.mappingObjs.put(urlMapping, obj);
+                    this.mappingMethods.put(urlMapping, method);
                 }
             }
         }
