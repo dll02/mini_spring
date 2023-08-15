@@ -1,33 +1,26 @@
 package com.minis.jdbc.core;
 
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 
-public abstract class JdbcTemplate {
+public class JdbcTemplate {
     public JdbcTemplate() {
     }
-    public Object query(String sql) {
+
+    public Object query(StatementCallback stmtcallback) {
         Connection con = null;
-        PreparedStatement stmt = null;
+        Statement stmt = null;
         ResultSet rs = null;
         Object rtnObj = null;
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/demo?characterEncoding=UTF8", "root", "12345678");
-            stmt = con.prepareStatement(sql);
-            rs = stmt.executeQuery();
-
-            //调用返回数据处理方法，由程序员自行实现
-            rtnObj = doInStatement(rs);
-        }
-        catch (Exception e) {
+            stmt = con.createStatement();
+            return stmtcallback.doInStatement(stmt);
+        } catch (Exception e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             try {
                 rs.close();
                 stmt.close();
@@ -38,5 +31,29 @@ public abstract class JdbcTemplate {
         return rtnObj;
     }
 
-    protected abstract  Object doInStatement(ResultSet rs);
+    public Object query(String sql, Object[] args, PreparedStatementCallback pstmtcallback) {
+        PreparedStatement pstmt = null;
+        Connection con = null;
+        Object rtnObj = null;
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/demo?characterEncoding=UTF8", "root", "12345678");
+            pstmt = con.prepareStatement(sql);
+            for (int i = 0; i < args.length; i++) { //设置参数
+                Object arg = args[i];
+                //按照不同的数据类型调用JDBC的不同设置方法
+                if (arg instanceof String) {
+                    pstmt.setString(i + 1, (String) arg);
+                } else if (arg instanceof Integer) {
+                    pstmt.setInt(i + 1, (int) arg);
+                }
+            }
+
+            rtnObj= pstmtcallback.doInPreparedStatement(pstmt);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rtnObj;
+    }
 }

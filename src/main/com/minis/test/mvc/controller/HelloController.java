@@ -42,6 +42,14 @@ public class HelloController {
 
     }
 
+    @RequestMapping("/test3")
+    public ModelAndView doTest3() {
+        User user = userService.getUserInfoPre(1);
+        ModelAndView mav = new ModelAndView("test", "msg", user.toString());
+        return mav;
+
+    }
+
     @RequestMapping("/test5")
     public ModelAndView doTest5(User user) {
 

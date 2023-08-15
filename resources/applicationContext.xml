@@ -16,7 +16,7 @@
     </bean>
     <bean id="userService" class="com.minis.test.mvc.service.UserService" />
     <bean id="autowiredAnnotationBeanPostProcessor" class="com.minis.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
-
+    <bean id="jdbcTemplate" class="com.minis.jdbc.core.JdbcTemplate" />
     <bean id="webBindingInitializer" class="com.minis.test.mvc.DateInitializer" />
     <bean id="objectMapper" class="com.minis.util.DefaultObjectMapper" >
         <property type="String" name="dateFormat" value="yyyy/MM/dd"/>

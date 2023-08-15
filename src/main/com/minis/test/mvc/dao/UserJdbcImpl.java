@@ -7,7 +7,7 @@ import com.minis.jdbc.core.JdbcTemplate;
 import com.minis.test.mvc.entity.User;
 
 public class UserJdbcImpl extends JdbcTemplate {
-    @Override
+//    @Override
     protected Object doInStatement(ResultSet rs) {
         //从jdbc数据集读取数据，并生成对象返回
         User rtnUser = null;
