@@ -42,6 +42,18 @@ public class HelloController {
 
     }
 
+    @RequestMapping("/test8")
+    public ModelAndView doTest8() {
+        List<User> users = userService.getUsersByExtractor(0);
+        StringBuilder res=new StringBuilder();
+        for(User user:users){
+            res.append(user.toString());
+        }
+        ModelAndView mav = new ModelAndView("test", "msg", res.toString());
+        return mav;
+
+    }
+
     @RequestMapping("/test3")
     public ModelAndView doTest3() {
         User user = userService.getUserInfoPre(1);
