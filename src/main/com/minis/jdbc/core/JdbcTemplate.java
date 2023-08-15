@@ -1,9 +1,12 @@
 package com.minis.jdbc.core;
 
 
+import javax.sql.DataSource;
 import java.sql.*;
 
 public class JdbcTemplate {
+
+    private DataSource dataSource;
     public JdbcTemplate() {
     }
 
@@ -14,8 +17,7 @@ public class JdbcTemplate {
         Object rtnObj = null;
 
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/demo?characterEncoding=UTF8", "root", "12345678");
+            con = dataSource.getConnection();
             stmt = con.createStatement();
             return stmtcallback.doInStatement(stmt);
         } catch (Exception e) {
@@ -37,8 +39,7 @@ public class JdbcTemplate {
         Object rtnObj = null;
 
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/demo?characterEncoding=UTF8", "root", "12345678");
+            con = dataSource.getConnection();
             pstmt = con.prepareStatement(sql);
             for (int i = 0; i < args.length; i++) { //设置参数
                 Object arg = args[i];
@@ -55,5 +56,13 @@ public class JdbcTemplate {
             e.printStackTrace();
         }
         return rtnObj;
+    }
+
+    public DataSource getDataSource() {
+        return dataSource;
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 }
