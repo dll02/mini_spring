@@ -1,12 +1,15 @@
 package com.minis.jdbc.core;
 
 
+import com.minis.beans.factory.annotation.Autowired;
+
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.List;
 
 public class JdbcTemplate {
 
+    @Autowired
     private DataSource dataSource;
 
     public JdbcTemplate() {

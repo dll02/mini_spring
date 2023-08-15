@@ -51,7 +51,6 @@ public class HelloController {
         }
         ModelAndView mav = new ModelAndView("test", "msg", res.toString());
         return mav;
-
     }
 
     @RequestMapping("/test3")

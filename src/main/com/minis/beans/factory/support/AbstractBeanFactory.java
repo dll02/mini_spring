@@ -242,27 +242,27 @@ public abstract class AbstractBeanFactory
                 Object[] paramValues = new Object[1];
                 if (!isRef) { //如果不是ref，只是普通属性
                     //对每一个属性，分数据类型分别处理
-                    if ("String".equals(pType) ||
-                            "java.lang.String".equals(pType)) {
+                    if ("String".equals(pType) || "java.lang.String".equals(pType)) {
                         paramTypes[0] = String.class;
-                    } else if ("Integer".equals(pType) ||
-                            "java.lang.Integer".equals(pType)) {
-                        paramTypes[i] = Integer.class;
-                    } else if ("int".equals(pType)) {
-                        paramTypes[i] = int.class;
-                    } else {
-                        paramTypes[i] = String.class;
+                        paramValues[0] = pValue;
                     }
-                    paramValues[0] = pValue;
+                    else if ("Integer".equals(pType) || "java.lang.Integer".equals(pType)) {
+                        paramTypes[0] = Integer.class;
+                        paramValues[0] = Integer.valueOf((String) pValue);
+                    }
+                    else if ("int".equals(pType)) {
+                        paramTypes[0] = int.class;
+                        paramValues[0] = Integer.valueOf((String) pValue).intValue();
+                    }
+                    else {
+                        paramTypes[0] = String.class;
+                        paramValues[0] = pValue;
+                    }
                 } else {//is ref, create the dependent beans
                     try {
                         paramTypes[0] = Class.forName(pType);
-                    } catch (ClassNotFoundException e) {
-                       e.printStackTrace();
-                    }
-                    try {//再次调用getBean创建ref的bean实例
-                        paramValues[0] = getBean((String) pValue);
-                    } catch (BeansException e) {
+                        paramValues[0] = getBean((String)pValue);
+                    } catch (ClassNotFoundException |BeansException e) {
                         e.printStackTrace();
                     }
                 }
