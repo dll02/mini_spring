@@ -22,7 +22,10 @@ public class XmlBeanDefinitionReader {
             Element element = (Element) resource.next();
             String beanID = element.attributeValue("id");
             String beanClassName = element.attributeValue("class");
+            String initMethod = element.attributeValue("init-method");
+
             BeanDefinition beanDefinition = new BeanDefinition(beanID, beanClassName);
+            beanDefinition.setInitMethodName(initMethod);
 
             List<Element> propertyElements = element.elements("property");
             List<String> refs = new ArrayList<>();

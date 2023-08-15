@@ -50,4 +50,8 @@
         <property type="javax.sql.DataSource" name="dataSource" ref="dataSource"/>
     </bean>
 
+    <bean id="sqlSessionFactory" class="com.minis.batis.DefaultSqlSessionFactory" init-method="init">
+        <property type="String" name="mapperLocations" value="mapper"/>
+    </bean>
+
 </beans>

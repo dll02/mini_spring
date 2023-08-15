@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mapper namespace="com.test.entity.User">
-    <select id="getUserInfo" parameterType="java.lang.Integer" resultType="com.test.entity.User">
+<mapper namespace="com.minis.test.mvc.entity.User">
+    <select id="getUserInfo" parameterType="java.lang.Integer" resultType="com.minis.test.mvc.entity.User">
         select id, name,birthday 
-        from users 
+        from user
         where id=?
     </select>
 </mapper>

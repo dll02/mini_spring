@@ -53,6 +53,14 @@ public class HelloController {
         return mav;
     }
 
+
+    @RequestMapping("/test9")
+    public ModelAndView doTest9() {
+        User user = userService.getUserInfoBySession(1);
+        ModelAndView mav = new ModelAndView("test", "msg", user.toString());
+        return mav;
+    }
+
     @RequestMapping("/test3")
     public ModelAndView doTest3() {
         User user = userService.getUserInfoPre(1);
