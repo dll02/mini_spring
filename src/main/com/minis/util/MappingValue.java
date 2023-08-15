@@ -1,4 +1,4 @@
-package com.minis.web;
+package com.minis.util;
 
 public class MappingValue {
     String uri;

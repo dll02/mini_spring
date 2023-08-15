@@ -8,7 +8,6 @@ import com.minis.beans.factory.config.BeanPostProcessor;
 import com.minis.beans.factory.config.ConfigurableListableBeanFactory;
 import com.minis.beans.factory.support.DefaultListableBeanFactory;
 import com.minis.context.*;
-import com.minis.web.XmlScanComponentHelper;
 import com.minis.web.context.WebApplicationContext;
 import jakarta.servlet.ServletContext;
 
@@ -87,7 +86,7 @@ public class AnnotationConfigWebApplicationContext
         //处理对应的文件目录
         for (File file : dir.listFiles()) { //目录下的文件或者子目录
             if (file.isDirectory()) { //对子目录递归扫描
-                scanPackage(packageName + "." + file.getName());
+                tempControllerNames.addAll(scanPackage(packageName + "." + file.getName()));
             } else { //类文件
                 // 存储类文件的 class 全类名 name
                 String controllerName = packageName + "."

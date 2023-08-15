@@ -1,5 +1,4 @@
-package com.minis.web.servlet;
-
+package com.minis.web.method;
 
 import java.lang.reflect.Method;
 
@@ -12,9 +11,12 @@ public class HandlerMethod {
     private  String className;
     private  String methodName;
 
-    public HandlerMethod(Method method, Object obj) {
+    public HandlerMethod(Method method, Object obj, Class<?> clz, String methodName) {
         this.method = method;
         this.bean = obj;
+        this.beanType = clz;
+        this.methodName = methodName;
+
     }
 
     public Method getMethod() {
@@ -72,4 +74,5 @@ public class HandlerMethod {
     public void setDescription(String description) {
         this.description = description;
     }
+
 }

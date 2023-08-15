@@ -25,7 +25,7 @@ public class PropertyEditorRegistrySupport {
 
     private void createDefaultEditors() {
         this.defaultEditors = new HashMap<>(64);
-
+        // 根据参数的类型,直接获取转换器
         // Default instances of collection editors.
         this.defaultEditors.put(int.class, new CustomNumberEditor(Integer.class, false));
         this.defaultEditors.put(Integer.class, new CustomNumberEditor(Integer.class, true));

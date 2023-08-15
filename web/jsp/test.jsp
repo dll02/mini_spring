@@ -9,8 +9,14 @@
 </head>
 <body>
 
+<div>
 
-<%= request.getAttribute("msg").toString() %>
+    <h2>hello world</h2>
+    <%= request.getAttribute("msg").toString() %>
+    <p><%= request.getAttribute("msg") %></p>
+</div>
+
 
 </body>
+
 </html>
