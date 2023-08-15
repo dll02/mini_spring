@@ -63,8 +63,11 @@ public class InternalResourceViewResolver implements ViewResolver{
 
     protected View buildView(String viewName) throws Exception {
         Class<?> viewClass = getViewClass();
-
+        // 创建新的 view 对象 通过 xml 配置进来的
+        // className: com.minis.web.servlet.view.JstlView
         View view = (View) viewClass.newInstance();
+        // 设置 jsp 要传输到前端的 jsp 页面 url
+        // 依赖注入的参数 Prefix Suffix
         view.setUrl(getPrefix() + viewName + getSuffix());
 
         String contentType = getContentType();
