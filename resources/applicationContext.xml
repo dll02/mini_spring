@@ -14,7 +14,7 @@
     </bean>
     <bean id="baseService" class="com.minis.test.auto.BaseService">
     </bean>
-
+    <bean id="userService" class="com.minis.test.mvc.service.UserService" />
     <bean id="autowiredAnnotationBeanPostProcessor" class="com.minis.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
 
     <bean id="webBindingInitializer" class="com.minis.test.mvc.DateInitializer" />

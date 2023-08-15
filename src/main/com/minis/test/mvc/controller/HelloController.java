@@ -18,6 +18,10 @@ import java.util.Date;
 import java.util.List;
 
 public class HelloController {
+
+    @Autowired
+    UserService userService;
+
     @RequestMapping("/test2")
     public void doTest2(HttpServletRequest request, HttpServletResponse response) {
         String str = "test 2, hello world!";
@@ -31,21 +35,20 @@ public class HelloController {
 
 
     @RequestMapping("/test4")
-    public void doTest5(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String message = "Hello from Servlet!";
+    public ModelAndView doTest4() {
+        User user = userService.getUserInfo(1);
+        ModelAndView mav = new ModelAndView("test", "msg", user.toString());
+        return mav;
 
-        // 将数据模型设置到请求属性中
-        request.setAttribute("msg", message);
-
-        // 转发请求到JSP页面
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/jsp/test.jsp");
-        dispatcher.forward(request, response);
     }
+
     @RequestMapping("/test5")
     public ModelAndView doTest5(User user) {
-        ModelAndView mav = new ModelAndView("test","msg",user.getName());
+
+        ModelAndView mav = new ModelAndView("test", "msg", user.getName());
         return mav;
     }
+
     @RequestMapping("/test6")
     public String doTest6(User user) {
         return "error";
