@@ -59,11 +59,16 @@
     <!--    <bean id="action" class="com.minis.test.mvc.service.Action1" />-->
     <!--    <bean id="action2" class="com.minis.test.mvc.service.Action2" />-->
     <!--    aop 用 ProxyFactory 替代-->
-    <bean id="realAction" class="com.minis.test.mvc.service.Action1" />
-    <bean id="action" class="com.minis.aop.ProxyFactoryBean" >
+    <bean id="realAction" class="com.minis.test.mvc.service.Action1"/>
+    <bean id="action" class="com.minis.aop.ProxyFactoryBean">
         <property type="java.lang.Object" name="target" ref="realAction"/>
-        <property type="String" name="interceptorName" value="myInterceptor"/>
+        <property type="String" name="interceptorName" value="myAfterAdvice"/>
     </bean>
-    <bean id="myInterceptor" class="com.minis.test.mvc.service.TracingInterceptor" />
+    <!--测试分别替换不同的interceptorName:-->
+    <bean id="myInterceptor" class="com.minis.test.mvc.service.TracingInterceptor"/>
+    <bean id="myBeforeAdvice" class="com.minis.test.mvc.service.MyBeforeAdvice"/>
+    <bean id="myAfterAdvice" class="com.minis.test.mvc.service.MyAfterAdvice"/>
+
+
 </beans>
 
