@@ -70,6 +70,8 @@ public abstract class AbstractBeanFactory
                 }
             }
         }
+
+        // 处理factorybean
         if (singleton instanceof FactoryBean) {
             System.out.println("factory bean -------------- " + beanName + "----------------" + singleton);
             return this.getObjectForBeanInstance(singleton, beanName);

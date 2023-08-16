@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <beans>
     <bean id="bbs" class="com.minis.test.auto.BaseBaseService">
-        <property type="com.minis.test.auto.AServiceImpl" name="as" ref="aservice" />
+        <property type="com.minis.test.auto.AServiceImpl" name="as" ref="aservice"/>
     </bean>
 
     <bean id="aservice" class="com.minis.test.auto.AServiceImpl">
@@ -14,11 +14,12 @@
     </bean>
     <bean id="baseService" class="com.minis.test.auto.BaseService">
     </bean>
-    <bean id="userService" class="com.minis.test.mvc.service.UserService" />
-    <bean id="autowiredAnnotationBeanPostProcessor" class="com.minis.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
+    <bean id="userService" class="com.minis.test.mvc.service.UserService"/>
+    <bean id="autowiredAnnotationBeanPostProcessor"
+          class="com.minis.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
 
-    <bean id="webBindingInitializer" class="com.minis.test.mvc.DateInitializer" />
-    <bean id="objectMapper" class="com.minis.util.DefaultObjectMapper" >
+    <bean id="webBindingInitializer" class="com.minis.test.mvc.DateInitializer"/>
+    <bean id="objectMapper" class="com.minis.util.DefaultObjectMapper">
         <property type="String" name="dateFormat" value="yyyy/MM/dd"/>
         <property type="String" name="decimalFormat" value="###.##"/>
     </bean>
@@ -28,15 +29,16 @@
 
     <bean id="handlerAdapter" class="com.minis.web.method.annotation.RequestMappingHandlerAdapter">
         <property type="com.minis.http.converter.HttpMessageConverter" name="messageConverter" ref="messageConverter"/>
-        <property type="com.minis.web.bind.support.WebBindingInitializer" name="webBindingInitializer" ref="webBindingInitializer"/>
+        <property type="com.minis.web.bind.support.WebBindingInitializer" name="webBindingInitializer"
+                  ref="webBindingInitializer"/>
     </bean>
 
     <bean id="handlerMapping" class="com.minis.web.method.annotation.RequestMappingHandlerMapping"/>
 
-    <bean id="viewResolver" class="com.minis.web.servlet.view.InternalResourceViewResolver" >
-        <property type="String" name="viewClassName" value="com.minis.web.servlet.view.JstlView" />
-        <property type="String" name="prefix" value="/jsp/" />
-        <property type="String" name="suffix" value=".jsp" />
+    <bean id="viewResolver" class="com.minis.web.servlet.view.InternalResourceViewResolver">
+        <property type="String" name="viewClassName" value="com.minis.web.servlet.view.JstlView"/>
+        <property type="String" name="prefix" value="/jsp/"/>
+        <property type="String" name="suffix" value=".jsp"/>
     </bean>
 
     <bean id="dataSource" class="com.minis.jdbc.pool.PooledDataSource">
@@ -46,7 +48,7 @@
         <property type="String" name="password" value="12345678"/>
         <property type="int" name="initialSize" value="3"/>
     </bean>
-    <bean id="jdbcTemplate" class="com.minis.jdbc.core.JdbcTemplate" >
+    <bean id="jdbcTemplate" class="com.minis.jdbc.core.JdbcTemplate">
         <property type="javax.sql.DataSource" name="dataSource" ref="dataSource"/>
     </bean>
 
@@ -54,4 +56,14 @@
         <property type="String" name="mapperLocations" value="mapper"/>
     </bean>
 
+    <!--    <bean id="action" class="com.minis.test.mvc.service.Action1" />-->
+    <!--    <bean id="action2" class="com.minis.test.mvc.service.Action2" />-->
+    <!--    aop 用 ProxyFactory 替代-->
+    <bean id="realAction" class="com.minis.test.mvc.service.Action1" />
+    <bean id="action" class="com.minis.aop.ProxyFactoryBean" >
+        <property type="java.lang.Object" name="target" ref="realAction"/>
+        <property type="String" name="interceptorName" value="myInterceptor"/>
+    </bean>
+    <bean id="myInterceptor" class="com.minis.test.mvc.service.TracingInterceptor" />
 </beans>
+

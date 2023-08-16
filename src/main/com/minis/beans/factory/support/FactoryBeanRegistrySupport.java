@@ -19,6 +19,7 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
         return object;
     }
 
+    //从factory bean中获取内部包含的对象
     private Object doGetObjectFromFactoryBean(final FactoryBean<?> factory, final String beanName) {
 
         Object object = null;
