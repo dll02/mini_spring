@@ -1,8 +1,10 @@
-package com.minis.aop;
+package com.minis.aop.framework;
+
+import com.minis.aop.MethodInvocation;
 
 import java.lang.reflect.Method;
 
-public class ReflectiveMethodInvocation implements MethodInvocation{
+public class ReflectiveMethodInvocation implements MethodInvocation {
     protected final Object proxy;
     protected final Object target;
     protected final Method method;

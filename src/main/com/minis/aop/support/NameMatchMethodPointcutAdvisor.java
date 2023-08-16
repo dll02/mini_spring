@@ -1,7 +1,12 @@
-package com.minis.aop;
+package com.minis.aop.support;
 
 
-public class NameMatchMethodPointcutAdvisor implements PointcutAdvisor{
+import com.minis.aop.*;
+import com.minis.aop.framework.adapter.AfterReturningAdviceInterceptor;
+import com.minis.aop.framework.adapter.MethodBeforeAdviceInterceptor;
+import com.minis.aop.support.NameMatchMethodPointcut;
+
+public class NameMatchMethodPointcutAdvisor implements PointcutAdvisor {
     private Advice advice = null;
     private MethodInterceptor methodInterceptor;
     private String mappedName;

@@ -1,7 +1,10 @@
-package com.minis.aop;
+package com.minis.aop.framework;
 
-import com.minis.aop.Advisor;
+import com.minis.aop.MethodInterceptor;
 import com.minis.aop.PointcutAdvisor;
+import com.minis.aop.framework.AopProxy;
+import com.minis.aop.framework.AopProxyFactory;
+import com.minis.aop.framework.DefaultAopProxyFactory;
 import com.minis.beans.BeansException;
 import com.minis.beans.factory.BeanFactory;
 import com.minis.beans.factory.BeanFactoryAware;

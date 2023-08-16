@@ -1,10 +1,13 @@
-package com.minis.aop;
+package com.minis.aop.support;
 
 
 import java.lang.reflect.Method;
+
+import com.minis.aop.MethodMatcher;
+import com.minis.aop.Pointcut;
 import com.minis.util.PatternMatchUtils;
 
-public class NameMatchMethodPointcut implements MethodMatcher,Pointcut{
+public class NameMatchMethodPointcut implements MethodMatcher, Pointcut {
     private String mappedName = "";
 
     public void setMappedName(String mappedName) {

@@ -27,12 +27,17 @@ public class ClassPathXmlApplicationContext extends AbstractApplicationContext {
     public ClassPathXmlApplicationContext(String fileName, boolean isRefresh) {
         Resource resource = new ClassPathXmlResource(fileName);
         DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
-        bf.addBeanPostProcessor(new AutowiredAnnotationBeanPostProcessor());
+//        bf.addBeanPostProcessor(new AutowiredAnnotationBeanPostProcessor());
         XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(bf);
         reader.loadBeanDefinitions(resource);
         this.beanFactory = bf;
         if (isRefresh) {
-            this.beanFactory.refresh();
+            // this.beanFactory.refresh(); 错误的 refresh,不是走DefaultListableBeanFactory的 refresh
+            try {
+                refresh();
+            } catch (BeansException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

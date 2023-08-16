@@ -1,5 +1,7 @@
-package com.minis.aop;
+package com.minis.aop.framework;
 
+
+import com.minis.aop.PointcutAdvisor;
 
 public class DefaultAopProxyFactory implements AopProxyFactory {
     @Override

@@ -9,5 +9,6 @@ public interface ListableBeanFactory extends BeanFactory {
     int getBeanDefinitionCount();
     String[] getBeanDefinitionNames();
     String[] getBeanNamesForType(Class<?> type);
+
     <T> Map<String, T> getBeansOfType(Class<T> type) throws BeansException;
 }

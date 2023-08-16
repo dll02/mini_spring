@@ -152,9 +152,11 @@ public class AnnotationConfigWebApplicationContext
 
     @Override
     public void registerBeanPostProcessors(ConfigurableListableBeanFactory bf) {
-
+        System.out.println("AnnotationConfigWebApplicationContext try to registerBeanPostProcessors");
         try {
             this.beanFactory.addBeanPostProcessor((BeanPostProcessor)(this.beanFactory.getBean("autowiredAnnotationBeanPostProcessor")));
+            this.beanFactory.addBeanPostProcessor((BeanPostProcessor)(this.beanFactory.getBean("autoProxyCreator")));
+
         } catch (BeansException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

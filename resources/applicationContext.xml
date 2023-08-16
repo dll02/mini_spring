@@ -56,23 +56,29 @@
         <property type="String" name="mapperLocations" value="mapper"/>
     </bean>
 
-    <!--    <bean id="action" class="com.minis.test.mvc.service.Action1" />-->
-    <!--    <bean id="action2" class="com.minis.test.mvc.service.Action2" />-->
+        <bean id="action" class="com.minis.test.mvc.service.Action1" />
+        <bean id="action2" class="com.minis.test.mvc.service.Action2" />
     <!--    aop 用 ProxyFactory 替代-->
     <bean id="realAction" class="com.minis.test.mvc.service.Action1"/>
-    <bean id="action" class="com.minis.aop.ProxyFactoryBean">
-        <property type="java.lang.Object" name="target" ref="realAction"/>
-        <property type="String" name="interceptorName" value="advisor"/>
-    </bean>
+<!--    <bean id="action" class="com.minis.aop.framework.ProxyFactoryBean">-->
+<!--        <property type="java.lang.Object" name="target" ref="realAction"/>-->
+<!--        <property type="String" name="interceptorName" value="advisor"/>-->
+<!--    </bean>-->
     <!--测试分别替换不同的interceptorName:-->
     <bean id="myInterceptor" class="com.minis.test.mvc.service.TracingInterceptor"/>
     <bean id="myBeforeAdvice" class="com.minis.test.mvc.service.MyBeforeAdvice"/>
     <bean id="myAfterAdvice" class="com.minis.test.mvc.service.MyAfterAdvice"/>
 
     <!--增加切点-->
-    <bean id="advisor" class="com.minis.aop.NameMatchMethodPointcutAdvisor">
+    <bean id="advisor" class="com.minis.aop.support.NameMatchMethodPointcutAdvisor">
         <property type="com.minis.aop.Advice" name="advice" ref="myBeforeAdvice"/>
         <property type="String" name="mappedName" value="do*"/>
+    </bean>
+
+    <!--    匹配多个目标做增强 -->
+    <bean id="autoProxyCreator" class="com.minis.aop.framework.autoproxy.BeanNameAutoProxyCreator" >
+        <property type="String" name="pattern" value="action*" />
+        <property type="String" name="interceptorName" value="advisor" />
     </bean>
 
 </beans>

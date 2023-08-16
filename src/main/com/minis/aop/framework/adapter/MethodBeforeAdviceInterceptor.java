@@ -1,4 +1,8 @@
-package com.minis.aop;
+package com.minis.aop.framework.adapter;
+
+import com.minis.aop.MethodBeforeAdvice;
+import com.minis.aop.MethodInterceptor;
+import com.minis.aop.MethodInvocation;
 
 public class MethodBeforeAdviceInterceptor implements MethodInterceptor {
     private final MethodBeforeAdvice advice;

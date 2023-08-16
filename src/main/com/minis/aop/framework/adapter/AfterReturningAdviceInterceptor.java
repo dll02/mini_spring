@@ -1,4 +1,9 @@
-package com.minis.aop;
+package com.minis.aop.framework.adapter;
+
+import com.minis.aop.AfterAdvice;
+import com.minis.aop.AfterReturningAdvice;
+import com.minis.aop.MethodInterceptor;
+import com.minis.aop.MethodInvocation;
 
 public class AfterReturningAdviceInterceptor implements MethodInterceptor, AfterAdvice {
 

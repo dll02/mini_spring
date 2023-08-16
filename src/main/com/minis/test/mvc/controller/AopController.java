@@ -42,6 +42,18 @@ public class AopController {
     @RequestMapping("/aop3")
     public void doTest3(HttpServletRequest request, HttpServletResponse response) {
         action.doSomething();
+    }
 
+    @Autowired
+    IAction action2;
+
+    @RequestMapping("/aop4")
+    public void doTest4(HttpServletRequest request, HttpServletResponse response) {
+        action2.doAction();
+    }
+
+    @RequestMapping("/aop5")
+    public void doTest5(HttpServletRequest request, HttpServletResponse response) {
+        action2.doSomething();
     }
 }
