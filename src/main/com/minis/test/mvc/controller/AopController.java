@@ -30,12 +30,18 @@ public class AopController {
 
     @RequestMapping("/aop2")
     public void doTest2(HttpServletRequest request, HttpServletResponse response) {
-       action.doAction();
+        action.doAction();
         String str = "test aop, hello world!";
         try {
             response.getWriter().write(str);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @RequestMapping("/aop3")
+    public void doTest3(HttpServletRequest request, HttpServletResponse response) {
+        action.doSomething();
+
     }
 }
